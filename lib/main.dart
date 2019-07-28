@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import './question.dart';
+import 'answer.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,24 +13,44 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   var _questionIndex = 0;
 
-  get questionIndex => _questionIndex;
-
   set questionIndex(questionIndex) {
     _questionIndex = questionIndex;
   }
 
-  void answerQuestion() {
+  void _answerQuestion() {
     setState(() {
-      questionIndex = questionIndex + 1;
+      _questionIndex = _questionIndex + 1;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     var questions = [
-      'Aimez-vous manger ?',
-      'Mangez-vous avant de dormir ?',
-      'Quel âge avez-vous ?'
+      {
+        'questionText': 'Quelle est votre couleur préféré ?',
+        'answer': ['Rouge', 'Bleu', 'Violet', 'Marron'],
+      },
+      {
+        'questionText': 'Quel est votre artiste préféré ?',
+        'answer': ['Dena Mwanba', 'Hillsong', 'M.W.Smith', 'Madéleine Yombi'],
+      },
+      {
+        'questionText': 'Quel est le nom du président Américain ?',
+        'answer': [
+          'Georges Bush',
+          'Antoine Padre',
+          'D.Trump',
+          'Emmanuel Macron'
+        ],
+      },
+      {
+        'questionText': 'Quel est votre animal préféré',
+        'answer': ['Chien', 'Chat', 'Singe', 'Elephant'],
+      },
+      {
+        'questionText': 'Quel est votre niveau d\'étude ?',
+        'answer': ['BEPC', 'BAC', 'BTS', 'License'],
+      },
     ];
 
     return MaterialApp(
@@ -42,25 +63,11 @@ class _MyAppState extends State<MyApp> {
         ),
         body: Column(
           children: <Widget>[
-            Question(questions[_questionIndex]),
-            RaisedButton(
-              child: Text('Réponse 1'),
-              onPressed: () {
-                answerQuestion();
-              },
-            ),
-            RaisedButton(
-              child: Text('Réponse 2'),
-              onPressed: () {
-                answerQuestion();
-              }
-            ),
-            RaisedButton(
-              child: Text('Réponse 3'),
-              onPressed: () {
-                answerQuestion();
-              }
-            ),
+            Question(questions[_questionIndex]['questionText']),
+            ...(questions[_questionIndex]['answer'] as List<String>)
+                .map((answer) {
+              return Answer(_answerQuestion, answer);
+            }).toList(),
           ],
         ),
       ),
